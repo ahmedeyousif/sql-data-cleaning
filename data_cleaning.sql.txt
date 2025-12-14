@@ -1,0 +1,38 @@
+-- SQL Data Cleaning Project
+-- Dataset: Car Information
+-- Tool: Google BigQuery
+
+-- Step 1: Check missing values
+SELECT
+  COUNTIF(make IS NULL) AS make_nulls,
+  COUNTIF(fuel_type IS NULL) AS fuel_type_nulls,
+  COUNTIF(engine_size IS NULL) AS engine_size_nulls,
+  COUNTIF(price IS NULL) AS price_nulls
+FROM `sql-2025-468913.cars.car_info`;
+
+-- Step 2: Standardize text format
+SELECT
+  UPPER(make) AS make,
+  UPPER(fuel_type) AS fuel_type,
+  UPPER(body_style) AS body_style,
+  engine_size,
+  price
+FROM `sql-2025-468913.cars.car_info`;
+
+-- Step 3: Validate text length
+SELECT
+  drive_wheels,
+  LENGTH(drive_wheels) AS drive_wheels_length
+FROM `sql-2025-468913.cars.car_info`
+WHERE LENGTH(drive_wheels) > 3;
+
+-- Step 4: Identify duplicate records
+SELECT
+  make,
+  fuel_type,
+  engine_size,
+  price,
+  COUNT(*) AS record_count
+FROM `sql-2025-468913.cars.car_info`
+GROUP BY make, fuel_type, engine_size, price
+HAVING COUNT(*) > 1;
